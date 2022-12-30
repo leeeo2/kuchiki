@@ -1,0 +1,22 @@
+Database:
+  User: root
+  Password: 12345678
+  Address: localhost
+  Port: 3306
+  Schema: kuchiki
+  MaxIdleConn: 20
+  MaxOpenConn: 5
+  LogLevel: DEBUG
+Server:
+  Address: 0.0.0.0
+  Port: 8888
+Log:
+  Filename: /tmp/kuchiki.log
+  MaxSize: 500
+  MaxAge: 30
+  MaxBackups: 10
+  Localtime: true
+  Compress: true
+
+  Level: DEBUG
+  Console: stdout
