@@ -1,22 +1,25 @@
 Database:
-  User: root
-  Password: 12345678
-  Address: localhost
+  User: "root"
+  Password: "12345678"
+  Host: "localhost"
   Port: 3306
-  Schema: kuchiki
+  Schema: "kuchiki"
   MaxIdleConn: 20
   MaxOpenConn: 5
-  LogLevel: DEBUG
 Server:
-  Address: 0.0.0.0
+  Address: "0.0.0.0"
   Port: 8888
 Log:
-  Filename: /tmp/kuchiki.log
+  Filename: "/tmp/kuchiki.log"
   MaxSize: 500
   MaxAge: 30
   MaxBackups: 10
   Localtime: true
   Compress: true
-
-  Level: DEBUG
-  Console: stdout
+  CallerSkip: 3
+  Level: "DEBUG"
+  Console: "stdout"
+  GormLevel: "info"
+  SqlSlowThreshold: 300
+  IgnoreRecordNotFoundError: false
+  IgnoreDuplicateError: false

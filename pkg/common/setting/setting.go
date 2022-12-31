@@ -1,35 +1,20 @@
 package setting
 
 import (
+	"github.com/leeexeo/kon/log"
+	"github.com/leeexeo/kon/orm"
 	"github.com/spf13/viper"
-	"leeeoxeo.github.com/kuchiki/pkg/common/log"
 )
 
 type Config struct {
-	Database Database     `yaml:"Database"`
+	Database orm.Config   `yaml:"Database"`
 	Server   ServerConfig `yaml:"Server"`
-	Log      *log.Config  `yaml:"Log"`
+	Log      log.Config   `yaml:"Log"`
 }
 
 type ServerConfig struct {
-	ListenAddr string `yaml:"ListenAddr"`
-	ListenPort int    `yaml:"ListenPort"`
-}
-
-type Database struct {
-	//Type        string `yaml:"Type"`
-	User        string `yaml:"User"`
-	Password    string `yaml:"Password"`
-	Host        string `yaml:"Host"`
-	Address     string `yaml:"Address"`
-	Port        string `yaml:"Port"`
-	Schema      string `yaml:"Schema"`
-	MaxIdleConn int    `yaml:"MaxIdleConn"`
-	MaxOpenConn int    `yaml:"MaxOpenConn"`
-	Charset     string `yaml:"Charset"`
-	Engine      string `yaml:"Engine"`
-	Collate     string `yaml:"Collate"`
-	LogLevel    string `yaml:"LogLevel"`
+	ListenAddr string `yaml:"Host"`
+	ListenPort int    `yaml:"Port"`
 }
 
 var globalConfig Config
@@ -40,7 +25,7 @@ func GlobalConfig() *Config {
 
 func defaultConfig() {
 	globalConfig = Config{
-		Database: Database{
+		Database: orm.Config{
 			User:        "root",
 			Password:    "x",
 			Host:        "127.0.0.1",
@@ -51,16 +36,30 @@ func defaultConfig() {
 			Charset:     "utf8",
 			Engine:      "InnoDB",
 			Collate:     "utf8_bin",
-			LogLevel:    "DEBUG",
 		},
 		Server: ServerConfig{
 			ListenAddr: "0.0.0.0",
 			ListenPort: 8888,
 		},
+		Log: log.Config{
+			Filename:                  "/var/log/kuchiki/kuchiki.log",
+			MaxSize:                   500,
+			MaxAge:                    7,
+			MaxBackups:                30,
+			LocalTime:                 false,
+			Compress:                  false,
+			CallerSkip:                3,
+			Level:                     "debug",
+			Console:                   "stdout",
+			GormLevel:                 "info",
+			SqlSlowThreshold:          300,
+			IgnoreRecordNotFoundError: false,
+			IgnoreDuplicateError:      false,
+		},
 	}
 }
 
-func InitGlobalConfig(configPath string) error {
+func InitGlobal(configPath string) error {
 	defaultConfig()
 	v := viper.New()
 	v.SetConfigFile(configPath)

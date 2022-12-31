@@ -1,13 +1,13 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 
-	_ "github.com/leeeoxeo/kon/log"
-	"leeeoxeo.github.com/kuchiki/pkg/common/log"
-	"leeeoxeo.github.com/kuchiki/pkg/common/setting"
-	"leeeoxeo.github.com/kuchiki/pkg/models"
+	"github.com/leeexeo/kon/log"
+	"github.com/leeexeo/kuchiki/pkg/common/setting"
+	"github.com/leeexeo/kuchiki/pkg/models"
 )
 
 func main() {
@@ -15,20 +15,23 @@ func main() {
 	flag.StringVar(&configPath, "config", "./etc/config.yaml", "config path")
 	flag.Parse()
 
-	//ctx := context.Background()
+	ctx := context.Background()
 
-	err := setting.InitGlobalConfig(configPath)
+	// init global config
+	fmt.Println("config path:", configPath)
+	err := setting.InitGlobal(configPath)
 	if err != nil {
 		fmt.Println("init config failed")
 		panic(err)
 	}
 
-	fmt.Printf("config:%+v \n", setting.GlobalConfig())
-	err = log.SetupGlobal(setting.GlobalConfig().Log)
+	// setup log
+	err = log.SetupGlobal(&setting.GlobalConfig().Log)
 	if err != nil {
-		fmt.Println("init log failed", err)
+		fmt.Printf("setup global log failed,err:%s\n", err.Error())
 		panic(err)
 	}
+	log.Debug(ctx, "setup log success", "a", "b")
 
 	//setup models
 	err = models.Setup()
