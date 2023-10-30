@@ -8,6 +8,7 @@ import (
 	"github.com/leeexeo/kon/log"
 	"github.com/leeexeo/kuchiki/pkg/common/setting"
 	"github.com/leeexeo/kuchiki/pkg/models"
+	"github.com/leeexeo/kuchiki/pkg/router"
 )
 
 func main() {
@@ -39,4 +40,9 @@ func main() {
 		panic(err)
 	}
 
+	//setup controller
+	err = router.Setup()
+	if err != nil {
+		panic(err)
+	}
 }
